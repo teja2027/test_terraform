@@ -1,48 +1,15 @@
-# Azure DevOps YAML Pipeline for Terraform Deployment
 trigger:
-  branches:
-    include:
-      - main
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  terraformVersion: '1.5.6' # Specify the Terraform version
-  azureServiceConnection: '<Your-Service-Connection-Name>'
-  terraformWorkingDirectory: '<Path-To-Terraform-Files>' # Example: 'terraform'
-
 steps:
-# Install Terraform
-- task: UseTerraform@0
+- task: AzureCLI@2
   inputs:
-    terraformVersion: $(terraformVersion)
-
-# # Initialize Terraform
-# - task: TerraformCLI@0
-#   inputs:
-#     command: 'init'
-#     workingDirectory: $(terraformWorkingDirectory)
-#     backendServiceArm: $(azureServiceConnection)
-
-# # Validate Terraform Configuration
-# - task: TerraformCLI@0
-#   inputs:
-#     command: 'validate'
-#     workingDirectory: $(terraformWorkingDirectory)
-
-# # Plan Terraform Deployment
-# - task: TerraformCLI@0
-#   inputs:
-#     command: 'plan'
-#     workingDirectory: $(terraformWorkingDirectory)
-#     backendServiceArm: $(azureServiceConnection)
-#     additionalArguments: '-out=tfplan'
-
-# # Apply Terraform Deployment
-# - task: TerraformCLI@0
-#   inputs:
-#     command: 'apply'
-#     workingDirectory: $(terraformWorkingDirectory)
-#     backendServiceArm: $(azureServiceConnection)
-#     additionalArguments: '-auto-approve tfplan'
+    azureSubscription: 'Azure_service_connect'
+    scriptType: 'bash'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      echo "Logging into Azure subscription using Service Principal..."
+      az account show
