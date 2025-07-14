@@ -11,12 +11,10 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Define the URL to fetch the latest Terraform version
-      $url = "https://releases.hashicorp.com/terraform/"
-      
-      # Fetch the latest version number
-      $html = Invoke-WebRequest -Uri $url
-      $latestVersion = ($html.Content -split 'terraform_') | Select-String -Pattern '^[0-9]+\.[0-9]+\.[0-9]+$' | Sort-Object -Descending | Select-Object -First 1
+      # Fetch the latest Terraform version from HashiCorp's releases API
+      $url = "https://checkpoint-api.hashicorp.com/v1/check/terraform"
+      $response = Invoke-WebRequest -Uri $url -UseBasicParsing
+      $latestVersion = ($response.Content | ConvertFrom-Json).current_version
       
       Write-Host "Latest Terraform Version: $latestVersion"
       
