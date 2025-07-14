@@ -8,19 +8,19 @@ variables:
   terraformVersion: '1.12.2' # Replace with the desired Terraform version
 
 steps:
-# - task: AzureCLI@2
-#   displayName: 'Login to Azure'
-#   inputs:
-#     azureSubscription: '<Your-Service-Connection-Name>'
-#     scriptType: 'ps'
-#     scriptLocation: 'inlineScript'
-#     inlineScript: |
-#       Write-Host "Azure CLI logged in successfully"
+- task: AzureCLI@2
+  displayName: 'Login to Azure'
+  inputs:
+    azureSubscription: 'Azure_service_connect'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      Write-Host "Azure CLI logged in successfully"
 
 - task: AzureCLI@2
   displayName: 'Install Terraform on Windows VM'
   inputs:
-    azureSubscription: '<Your-Service-Connection-Name>'
+    azureSubscription: 'Azure_service_connect'
     scriptType: 'ps'
     scriptLocation: 'inlineScript'
     inlineScript: |
