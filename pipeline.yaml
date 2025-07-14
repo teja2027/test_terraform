@@ -10,4 +10,4 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      terraform --version
+      az --version
