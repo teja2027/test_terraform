@@ -6,11 +6,53 @@ pool:
 
 # Azure DevOps YAML pipeline to install Azure CLI on Windows machine
 steps:
-- task: AzureCLI@2
+- task: PowerShell@2
+  displayName: 'Download Terraform Latest Version'
   inputs:
-    azureSubscription: 'Azure_service_connect' # Replace with the name of your service connection
-    scriptType: 'ps' # Use PowerShell script
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      Write-Host "Authenticating to Azure using service connection..."
-      az account show
+    targetType: 'inline'
+    script: |
+      # Define the URL to fetch the latest Terraform version
+      $url = "https://releases.hashicorp.com/terraform/"
+      
+      # Fetch the latest version number
+      $html = Invoke-WebRequest -Uri $url
+      $latestVersion = ($html.Content -split 'terraform_') | Select-String -Pattern '^[0-9]+\.[0-9]+\.[0-9]+$' | Sort-Object -Descending | Select-Object -First 1
+      
+      Write-Host "Latest Terraform Version: $latestVersion"
+      
+      # Construct the download URL for Windows 64-bit
+      $downloadUrl = "https://releases.hashicorp.com/terraform/$latestVersion/terraform_${latestVersion}_windows_amd64.zip"
+      
+      # Download the Terraform zip file
+      $outputPath = "$(System.DefaultWorkingDirectory)\terraform.zip"
+      Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
+
+      Write-Host "Terraform downloaded to $outputPath"
+
+- task: PowerShell@2
+  displayName: 'Install Terraform'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Define the path to the Terraform zip file
+      $zipPath = "$(System.DefaultWorkingDirectory)\terraform.zip"
+      
+      # Define the installation directory
+      $installDir = "$(System.DefaultWorkingDirectory)\terraform"
+      
+      # Unzip the Terraform binary
+      Expand-Archive -Path $zipPath -DestinationPath $installDir
+      
+      Write-Host "Terraform installed to $installDir"
+
+      # Add Terraform to PATH
+      $env:Path += ";$installDir"
+      Write-Host "Terraform added to PATH"
+
+- task: PowerShell@2
+  displayName: 'Verify Terraform Installation'
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Verify Terraform installation
+      terraform --version
