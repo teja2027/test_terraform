@@ -10,33 +10,4 @@ steps:
   inputs:
     targetType: 'inline'
     script: |
-      # Define the Terraform version
-      $terraformVersion = "1.5.6" # Replace with the desired version
-
-      # Define the download URL
-      $terraformUrl = "https://releases.hashicorp.com/terraform/$terraformVersion/terraform_${terraformVersion}_windows_amd64.zip"
-
-      # Define the destination paths
-      $downloadPath = "$(System.DefaultWorkingDirectory)\terraform.zip"
-      $extractPath = "$(System.DefaultWorkingDirectory)\terraform"
-
-      # Download Terraform binary
-      Write-Host "Downloading Terraform from $terraformUrl"
-      Invoke-WebRequest -Uri $terraformUrl -OutFile $downloadPath
-
-      # Create the extraction folder if it doesn't exist
-      if (!(Test-Path -Path $extractPath)) {
-        New-Item -ItemType Directory -Path $extractPath
-      }
-
-      # Extract Terraform binary
-      Write-Host "Extracting Terraform to $extractPath"
-      Expand-Archive -Path $downloadPath -DestinationPath $extractPath -Force
-
-      # Add Terraform to PATH
-      Write-Host "Adding Terraform to PATH"
-      $env:Path += ";$extractPath"
-
-      # Verify Terraform installation
-      Write-Host "Verifying Terraform installation"
       terraform --version
