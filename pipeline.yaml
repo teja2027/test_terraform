@@ -5,7 +5,20 @@ pool:
   name: 'my-agent-pool' 
 
 steps:
-- task: TerraformInstaller@0
-  inputs:
-    terraformVersion: 'latest'
+- script: |
+    # Define the Terraform version
+    $terraformVersion = "1.5.6" # Replace with the desired version
+
+    # Download Terraform binary
+    Invoke-WebRequest -Uri "https://releases.hashicorp.com/terraform/$terraformVersion/terraform_${terraformVersion}_windows_amd64.zip" -OutFile "terraform.zip"
+
+    # Extract Terraform binary
+    Expand-Archive -Path "terraform.zip" -DestinationPath "$(System.DefaultWorkingDirectory)\terraform"
+
+    # Add Terraform to PATH
+    $env:Path += ";$(System.DefaultWorkingDirectory)\terraform"
+
+    # Verify Terraform installation
+    terraform --version
+  displayName: 'Install Terraform Manually'
     
