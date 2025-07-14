@@ -6,10 +6,10 @@ pool:
 
 steps:
 - script: |
-    echo Installing Terraform...
-    curl -o terraform.zip https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_windows_amd64.zip
-    powershell -Command "Expand-Archive terraform.zip -DestinationPath C:\terraform -Force"
+    # echo Installing Terraform...
+    # curl -o terraform.zip https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_windows_amd64.zip
+    # powershell -Command "Expand-Archive terraform.zip -DestinationPath C:\terraform -Force"
     echo Adding Terraform to PATH...
-    set PATH=C:\terraform;%PATH%
+    set PATH=C:terraform;%PATH%
     terraform --version
   displayName: 'Install and Verify Terraform Version'
