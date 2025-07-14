@@ -5,15 +5,10 @@ pool:
   name: 'my-agent-pool' 
 
 steps:
-- task: UsePythonVersion@1
-  inputs:
-    versionSpec: '3.x'
-    addToPath: true
-
 - script: |
     echo Installing Terraform...
     curl -o terraform.zip https://releases.hashicorp.com/terraform/1.5.4/terraform_1.5.4_windows_amd64.zip
-    unzip terraform.zip -d C:\terraform
+    powershell -Command "Expand-Archive terraform.zip -DestinationPath C:\terraform -Force"
     echo Adding Terraform to PATH...
     set PATH=C:\terraform;%PATH%
     terraform --version
