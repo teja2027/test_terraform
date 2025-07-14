@@ -27,30 +27,30 @@ steps:
 
       Write-Host "Terraform downloaded to $outputPath"
 
-- task: PowerShell@2
-  displayName: 'Install Terraform'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Define the path to the Terraform zip file
-      $zipPath = "$(System.DefaultWorkingDirectory)terraform.zip"
+# - task: PowerShell@2
+#   displayName: 'Install Terraform'
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Define the path to the Terraform zip file
+#       $zipPath = "$(System.DefaultWorkingDirectory)terraform.zip"
       
-      # Define the installation directory
-      $installDir = "$(System.DefaultWorkingDirectory)terraform"
+#       # Define the installation directory
+#       $installDir = "$(System.DefaultWorkingDirectory)terraform"
       
-      # Unzip the Terraform binary
-      Expand-Archive -Path $zipPath -DestinationPath $installDir
+#       # Unzip the Terraform binary
+#       Expand-Archive -Path $zipPath -DestinationPath $installDir
       
-      Write-Host "Terraform installed to $installDir"
+#       Write-Host "Terraform installed to $installDir"
 
-      # Add Terraform to PATH temporarily for the pipeline session
-      $env:Path = "$installDir;$env:Path"
-      Write-Host "Terraform added to PATH"
+#       # Add Terraform to PATH temporarily for the pipeline session
+#       $env:Path = "$installDir;$env:Path"
+#       Write-Host "Terraform added to PATH"
 
-- task: PowerShell@2
-  displayName: 'Verify Terraform Installation'
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Verify Terraform installation
-      terraform --version
+# - task: PowerShell@2
+#   displayName: 'Verify Terraform Installation'
+#   inputs:
+#     targetType: 'inline'
+#     script: |
+#       # Verify Terraform installation
+#       terraform --version
