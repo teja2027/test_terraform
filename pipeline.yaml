@@ -11,7 +11,7 @@ steps:
     targetType: 'inline'
     script: |
       # Define the Terraform version
-      $terraformVersion = "1.5.6" # Replace with the desired version
+      $terraformVersion = "1.12.2" # Replace with the desired version
 
       # Download Terraform binary
       Invoke-WebRequest -Uri "https://releases.hashicorp.com/terraform/$terraformVersion/terraform_${terraformVersion}_windows_amd64.zip" -OutFile "$(System.DefaultWorkingDirectory)\terraform.zip"
