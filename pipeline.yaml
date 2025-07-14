@@ -8,7 +8,7 @@ pool:
 steps:
 - task: AzureCLI@2
   inputs:
-    azureSubscription: '<ServiceConnectionName>' # Replace with the name of your service connection
+    azureSubscription: 'Azure_service_connect' # Replace with the name of your service connection
     scriptType: 'ps' # Use PowerShell script
     scriptLocation: 'inlineScript'
     inlineScript: |
