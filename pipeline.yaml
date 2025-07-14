@@ -22,7 +22,7 @@ steps:
       $downloadUrl = "https://releases.hashicorp.com/terraform/$latestVersion/terraform_${latestVersion}_windows_amd64.zip"
       
       # Download the Terraform zip file
-      $outputPath = "$(System.DefaultWorkingDirectory)\terraform.zip"
+      $outputPath = "$(System.DefaultWorkingDirectory)terraform.zip"
       Invoke-WebRequest -Uri $downloadUrl -OutFile $outputPath
 
       Write-Host "Terraform downloaded to $outputPath"
@@ -33,18 +33,18 @@ steps:
     targetType: 'inline'
     script: |
       # Define the path to the Terraform zip file
-      $zipPath = "$(System.DefaultWorkingDirectory)\terraform.zip"
+      $zipPath = "$(System.DefaultWorkingDirectory)terraform.zip"
       
       # Define the installation directory
-      $installDir = "$(System.DefaultWorkingDirectory)\terraform"
+      $installDir = "$(System.DefaultWorkingDirectory)terraform"
       
       # Unzip the Terraform binary
       Expand-Archive -Path $zipPath -DestinationPath $installDir
       
       Write-Host "Terraform installed to $installDir"
 
-      # Add Terraform to PATH
-      $env:Path += ";$installDir"
+      # Add Terraform to PATH temporarily for the pipeline session
+      $env:Path = "$installDir;$env:Path"
       Write-Host "Terraform added to PATH"
 
 - task: PowerShell@2
