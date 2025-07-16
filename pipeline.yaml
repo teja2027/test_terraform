@@ -24,7 +24,7 @@ stages:
         # Checkout code from GitHub
         - task: Checkout@1
           inputs:
-            repository: "https://github.com/teja2027/test_terraform.git"
+            repository: "test_terraform"
             persistCredentials: true
             clean: true
             serviceConnection: "Github_service_connection"
