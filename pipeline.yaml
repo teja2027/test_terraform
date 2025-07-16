@@ -86,7 +86,7 @@ stages:
     pool:
       vmImage: 'my-agent-pool' 
     steps:
-    - task: TerraformTaskV4@4
+    - task: TerraformTaskV3@3
       displayName: Tf init
       inputs:
         provider: 'azurerm'
@@ -96,12 +96,12 @@ stages:
         backendAzureRmStorageAccountName: 'tfstate011962384904'
         backendAzureRmContainerName: 'tfstate'
         backendAzureRmKey: 'terraform.tfstate'
-    - task: TerraformTaskV4@4
+    - task: TerraformTaskV3@3
       displayName: Tf Validate
       inputs:
         provider: 'azurerm'
         command: 'validate'
-    - task: TerraformTaskV4@4
+    - task: TerraformTaskV3@3
       displayName: Tf fmt
       inputs:
         provider: 'azurerm'
@@ -109,7 +109,7 @@ stages:
         customCommand: 'fmt'
         outputTo: 'console'
         environmentServiceNameAzureRM: 'b9e2d554-3c73-40f8-b8d2-3012f509c09c'
-    - task: TerraformTaskV4@4
+    - task: TerraformTaskV3@3
       inputs:
         provider: 'azurerm'
         command: 'plan'
