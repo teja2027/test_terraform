@@ -13,7 +13,7 @@ stages:
       - job: Validate
         continueOnError: False
         steps:
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Init Terraform'
             inputs:
               provider: 'azurerm'
@@ -24,12 +24,12 @@ stages:
               backendAzureRmStorageAccountName: 'tfstate011962384904'
               backendAzureRmContainerName: 'tfstate'
               backendAzureRmKey: 'terraform.tfstate'
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Validate Terraform'
             inputs:
               provider: 'azurerm'
               command: 'validate'
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Plan Terraform'
             inputs:
               provider: 'azurerm'
@@ -55,7 +55,7 @@ stages:
       - job: Apply
         displayName: 'Apply Terraform' 
         steps:
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Init Terraform'
             inputs:
               provider: 'azurerm'
@@ -66,12 +66,12 @@ stages:
               backendAzureRmStorageAccountName: 'storage name'
               backendAzureRmContainerName: 'terraform'
               backendAzureRmKey: 'prod/terraform.tfstate'
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Validate Terraform'
             inputs:
               provider: 'azurerm'
               command: 'validate'          
-          - task: TerraformTaskV4@4
+          - task: TerraformTaskV3@3
             displayName: 'Apply Terraform'
             inputs:
               provider: 'azurerm'
