@@ -14,7 +14,7 @@ stages:
         - task: AzureCLI@2
           inputs:
             azureSubscription: "Azure_service_connect"
-            
+
 - stage: TerraformInitPlan
   displayName: "Terraform Init and Plan"
   jobs:
@@ -25,7 +25,9 @@ stages:
         - task: Checkout@1
           inputs:
             repository: "https://github.com/teja2027/test_terraform.git"
+            persistCredentials: true
             clean: true
+            serviceConnection: "Github_service_connection"
 
         # Initialize Terraform
         - script: |
