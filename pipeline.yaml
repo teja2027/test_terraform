@@ -4,12 +4,73 @@ trigger:
 pool:
   name: 'my-agent-pool' 
 
-steps:
-- script: |
-    echo Installing Terraform...
-    curl -o terraform.zip https://releases.hashicorp.com/terraform/1.12.2/terraform_1.12.2_windows_amd64.zip
-    powershell -Command "Expand-Archive terraform.zip -DestinationPath C:\terraform -Force"
-    echo Adding Terraform to PATH...
-    set PATH=C:\terraform;%PATH%
-    terraform --version
-  displayName: 'Install and Verify Terraform Version'
+stages:
+- stage: LoginToAzure
+  displayName: "Login to Azure Portal"
+  jobs:
+    - job: AzureLogin
+      displayName: "Azure Login"
+      steps:
+        - task: AzureCLI@2
+          inputs:
+            azureSubscription: "Azure_service_connect"
+            
+- stage: TerraformInitPlan
+  displayName: "Terraform Init and Plan"
+  jobs:
+    - job: TerraformPlan
+      displayName: "Terraform Plan"
+      steps:
+        # Checkout code from GitHub
+        - task: Checkout@1
+          inputs:
+            repository: "https://github.com/teja2027/test_terraform.git"
+            clean: true
+
+        # Initialize Terraform
+        - script: |
+            terraform init
+          displayName: "Terraform Init"
+
+        # Run Terraform Plan
+        - script: |
+            terraform plan -out=tfplan
+          displayName: "Terraform Plan"
+
+        # Publish Terraform Plan as an artifact
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: "$(Pipeline.Workspace)/tfplan"
+            artifactName: "tfplan"
+            publishLocation: "pipeline"
+
+# - stage: TerraformApply
+#   displayName: "Terraform Apply"
+#   dependsOn: TerraformInitPlan
+#   condition: eq(variables['Build.SourceBranchName'], 'main')
+#   jobs:
+#     - job: TerraformApply
+#       displayName: "Terraform Apply"
+#       pool:
+#         vmImage: "ubuntu-latest"
+#       steps:
+#         # Checkout code from GitHub
+#         - task: Checkout@1
+#           inputs:
+#             repository: "<GitHub-repository-name>"
+#             clean: true
+
+#         # Install Terraform
+#         - task: TerraformInstaller@0
+#           inputs:
+#             terraformVersion: "latest"
+
+#         # Initialize Terraform
+#         - script: |
+#             terraform init
+#           displayName: "Terraform Init"
+
+#         # Apply Terraform Plan
+#         - script: |
+#             terraform apply -auto-approve tfplan
+#           displayName: "Terraform Apply"
