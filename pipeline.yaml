@@ -61,11 +61,11 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              backendServiceArm: 'subscription name'
-              backendAzureRmResourceGroupName: 'resource group name'
-              backendAzureRmStorageAccountName: 'storage name'
-              backendAzureRmContainerName: 'terraform'
-              backendAzureRmKey: 'prod/terraform.tfstate'
+              backendServiceArm: 'b9e2d554-3c73-40f8-b8d2-3012f509c09c'
+              backendAzureRmResourceGroupName: 'myRg'
+              backendAzureRmStorageAccountName: 'tfstate011962384904'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
           - task: TerraformTaskV3@3
             displayName: 'Validate Terraform'
             inputs:
