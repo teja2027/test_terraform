@@ -8,20 +8,21 @@ pool:
   name: 'my-agent-pool' 
 
 stages:
-  - stage: Azure Login
-    jobs: 
-      - job: Login
-        steps:
-          - task: AzureCLI@2
-            displayName: 'Login to Azure using Azure CLI'
-            inputs:
-              azureSubscription: 'Azure_service_connect'
-              scriptType: 'ps'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                echo "Logging into Azure..."
-                az account show 
-  
+- stage: Azure_Login
+  displayName: 'Azure Login'
+  jobs:
+  - job: LoginToAzure
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Login to Azure using Azure CLI'
+      inputs:
+        azureSubscription: '<Your-Service-Connection-Name>'
+        scriptType: 'ps'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo "Logging into Azure..."
+          az account show
+
   # - stage: Terraform_validate
   #   jobs:
   #     - job: Validate
