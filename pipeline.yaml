@@ -16,7 +16,7 @@ stages:
     - task: AzureCLI@2
       displayName: 'Login to Azure using Azure CLI'
       inputs:
-        azureSubscription: '<Your-Service-Connection-Name>'
+        azureSubscription: 'azure_connect'
         scriptType: 'ps'
         scriptLocation: 'inlineScript'
         inlineScript: |
