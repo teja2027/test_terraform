@@ -36,8 +36,8 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              terraformPath: 'C:\terraform'
+              #workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
+              workingDirectory: 'C:\terraform'
               backendServiceArm: 'azure_connect'
               backendAzureRmResourceGroupName: 'myRg'
               backendAzureRmStorageAccountName: 'tfstate011962384904'
@@ -53,8 +53,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-              terraformPath: 'C:\terraform'
+              workingDirectory: 'C:\terraform'
               commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan'
               environmentServiceNameAzureRM: 'azure_connect'
   # - stage: Approve_apply
