@@ -1,8 +1,13 @@
 trigger:
-- none
+  branches:
+    include:
+      - feature
+      - main
 
 pr:
-- none
+  branches:
+    include:
+      - main
 
 pool:
   name: 'my-agent-pool' 
@@ -37,19 +42,9 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
               environmentServiceNameAzureRM: 'azure_connect'
-  - stage: Approve_apply
-    condition: succeeded ('terraform_validate')
-    dependsOn: terraform_validate
-    jobs:
-      - job: waitForValidation
-        displayName: Wait for external validation
-        pool: server
-        steps:
-          - task: ManualValidation@0
-            displayName: "Approval e-mail sent to $(Build.RequestedForEmail)"
-            inputs:
-              notifyUsers: '$(Build.RequestedForEmail)'
+
   - stage: Apply_plan
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
     jobs:
       - job: Apply
         displayName: 'Apply Terraform' 
