@@ -12,17 +12,17 @@ data "azurerm_subnet" "subnet" {
 }
 
 # Create a new Network Interface connected to the existing Subnet
-# resource "azurerm_network_interface" "example" {
-#   name                = "${var.prefix}-nic"
-#   location            = var.location # Update the location if necessary
-#   resource_group_name = data.azurerm_virtual_network.vnet.resource_group_name # Replace with your resource group name
+resource "azurerm_network_interface" "example" {
+  name                = "${var.prefix}-nic"
+  location            = var.location # Update the location if necessary
+  resource_group_name = data.azurerm_virtual_network.vnet.resource_group_name # Replace with your resource group name
 
-#   ip_configuration {
-#     name                          = "${var.prefix}-ip"
-#     subnet_id                     = data.azurerm_subnet.subnet.id
-#     private_ip_address_allocation = "Dynamic"
-#   }
-# }
+  ip_configuration {
+    name                          = "${var.prefix}-ip"
+    subnet_id                     = data.azurerm_subnet.subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
 
 
 # resource "azurerm_windows_virtual_machine" "testvm" {
