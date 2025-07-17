@@ -14,7 +14,7 @@ pool:
 
 stages:
   - stage: Terraform_validate
-    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') 
+    condition: and(ne(variables['Build.Reason'], 'PullRequest'), startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/'))
     jobs:
       - job: Validate
         continueOnError: False
