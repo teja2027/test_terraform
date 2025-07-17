@@ -37,18 +37,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
               environmentServiceNameAzureRM: 'azure_connect'
-  - stage: Approve_apply
-    condition: succeeded ('terraform_validate')
-    dependsOn: terraform_validate
-    jobs:
-      - job: waitForValidation
-        displayName: Wait for external validation
-        pool: server
-        steps:
-          - task: ManualValidation@0
-            displayName: "Approval e-mail sent to $(Build.RequestedForEmail)"
-            inputs:
-              notifyUsers: '$(Build.RequestedForEmail)'
+              
   - stage: Apply_plan
     jobs:
       - job: Apply
