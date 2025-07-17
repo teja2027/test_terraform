@@ -1,21 +1,3 @@
-
-
-# stages:
-# - stage: Azure_Login
-#   displayName: 'Azure Login'
-#   jobs:
-#   - job: LoginToAzure
-#     steps:
-#     - task: AzureCLI@2
-#       displayName: 'Login to Azure using Azure CLI'
-#       inputs:
-#         azureSubscription: 'azure_connect'
-#         scriptType: 'ps'
-#         scriptLocation: 'inlineScript'
-#         inlineScript: |
-#           echo "Logging into Azure..."
-#           az account show
-
 trigger:
 - none
 
@@ -25,14 +7,6 @@ pr:
 pool:
   name: 'my-agent-pool' 
 
-# steps:
-#   - task: PowerShell@2
-#     displayName: 'Print Current Working Directory'
-#     inputs:
-#       targetType: 'inline'
-#       script: |
-#         Write-Host "Current Working Directory:"
-#         Write-Host (Get-Location).Path
 stages:
   - stage: Terraform_validate
     jobs:
@@ -45,7 +19,6 @@ stages:
               provider: 'azurerm'
               command: 'init'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
-              #workingDirectory: 'C:\terraform'
               backendServiceArm: 'azure_connect'
               backendAzureRmResourceGroupName: 'myRg'
               backendAzureRmStorageAccountName: 'tfstate011962384904'
@@ -64,46 +37,46 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
               environmentServiceNameAzureRM: 'azure_connect'
-  # - stage: Approve_apply
-  #   condition: succeeded ('terraform_validate')
-  #   dependsOn: terraform_validate
-  #   jobs:
-  #     - job: waitForValidation
-  #       displayName: Wait for external validation
-  #       pool: server
-  #       steps:
-  #         - task: ManualValidation@0
-  #           displayName: " Approval e-mail sent to $(Build.RequestedForEmail)"
-  #           inputs:
-  #             notifyUsers: '$(Build.RequestedForEmail)'
-  # - stage: Apply_plan
-  #   jobs:
-  #     - job: Apply
-  #       displayName: 'Apply Terraform' 
-  #       steps:
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Init Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'init'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-  #             backendServiceArm: 'azure_connect'
-  #             backendAzureRmResourceGroupName: 'myRg'
-  #             backendAzureRmStorageAccountName: 'tfstate011962384904'
-  #             backendAzureRmContainerName: 'tfstate'
-  #             backendAzureRmKey: 'terraform.tfstate'
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Validate Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'validate'          
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Apply Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'apply'
-  #             workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-  #             environmentServiceNameAzureRM: 'azure_connect'
+  - stage: Approve_apply
+    condition: succeeded ('terraform_validate')
+    dependsOn: terraform_validate
+    jobs:
+      - job: waitForValidation
+        displayName: Wait for external validation
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            displayName: "Approval e-mail sent to $(Build.RequestedForEmail)"
+            inputs:
+              notifyUsers: '$(Build.RequestedForEmail)'
+  - stage: Apply_plan
+    jobs:
+      - job: Apply
+        displayName: 'Apply Terraform' 
+        steps:
+          - task: TerraformTaskV4@4
+            displayName: 'Init Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              backendServiceArm: 'azure_connect'
+              backendAzureRmResourceGroupName: 'myRg'
+              backendAzureRmStorageAccountName: 'tfstate011962384904'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformTaskV4@4
+            displayName: 'Validate Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'          
+          - task: TerraformTaskV4@4
+            displayName: 'Apply Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              environmentServiceNameAzureRM: 'azure_connect'
 
 
     
