@@ -4,13 +4,16 @@ trigger:
       - feature
 
 pr:
-- none
+  branches:
+    include:
+      - main
 
 pool:
   name: 'my-agent-pool' 
 
 stages:
   - stage: Terraform_validate
+    condition: startsWith(variables['Build.SourceBranch'], 'refs/heads/feature/') 
     jobs:
       - job: Validate
         continueOnError: False
@@ -41,6 +44,7 @@ stages:
               environmentServiceNameAzureRM: 'azure_connect'
 
   - stage: Apply_plan
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
     jobs:
       - job: Apply
         displayName: 'Apply Terraform' 
