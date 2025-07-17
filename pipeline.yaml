@@ -1,5 +1,7 @@
 trigger:
-- none
+  branches:
+    include:
+      - feature/*
 
 pr:
 - none
@@ -37,7 +39,7 @@ stages:
               workingDirectory: '$(System.DefaultWorkingDirectory)'
               commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
               environmentServiceNameAzureRM: 'azure_connect'
-              
+
   - stage: Apply_plan
     jobs:
       - job: Apply
