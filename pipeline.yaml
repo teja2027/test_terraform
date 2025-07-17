@@ -25,45 +25,45 @@ pr:
 pool:
   name: 'my-agent-pool' 
 
-steps:
-  - task: PowerShell@2
-    displayName: 'Print Current Working Directory'
-    inputs:
-      targetType: 'inline'
-      script: |
-        Write-Host "Current Working Directory:"
-        Write-Host (Get-Location).Path
-#stages:
-  # - stage: Terraform_validate
-  #   jobs:
-  #     - job: Validate
-  #       continueOnError: False
-  #       steps:
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Init Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'init'
-  #             #workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
-  #             workingDirectory: 'C:\terraform'
-  #             backendServiceArm: 'azure_connect'
-  #             backendAzureRmResourceGroupName: 'myRg'
-  #             backendAzureRmStorageAccountName: 'tfstate011962384904'
-  #             backendAzureRmContainerName: 'tfstate'
-  #             backendAzureRmKey: 'terraform.tfstate'
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Validate Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'validate'
-  #         - task: TerraformTaskV4@4
-  #           displayName: 'Plan Terraform'
-  #           inputs:
-  #             provider: 'azurerm'
-  #             command: 'plan'
-  #             workingDirectory: 'C:\terraform'
-  #             commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform/terraform.tfplan'
-  #             environmentServiceNameAzureRM: 'azure_connect'
+# steps:
+#   - task: PowerShell@2
+#     displayName: 'Print Current Working Directory'
+#     inputs:
+#       targetType: 'inline'
+#       script: |
+#         Write-Host "Current Working Directory:"
+#         Write-Host (Get-Location).Path
+stages:
+  - stage: Terraform_validate
+    jobs:
+      - job: Validate
+        continueOnError: False
+        steps:
+          - task: TerraformTaskV4@4
+            displayName: 'Init Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              #workingDirectory: 'C:\terraform'
+              backendServiceArm: 'azure_connect'
+              backendAzureRmResourceGroupName: 'myRg'
+              backendAzureRmStorageAccountName: 'tfstate011962384904'
+              backendAzureRmContainerName: 'tfstate'
+              backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformTaskV4@4
+            displayName: 'Validate Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'validate'
+          - task: TerraformTaskV4@4
+            displayName: 'Plan Terraform'
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              workingDirectory: '$(System.DefaultWorkingDirectory)'
+              commandOptions: '-lock=false -out=$(System.DefaultWorkingDirectory)/terraform.tfplan'
+              environmentServiceNameAzureRM: 'azure_connect'
   # - stage: Approve_apply
   #   condition: succeeded ('terraform_validate')
   #   dependsOn: terraform_validate
