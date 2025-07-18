@@ -11,7 +11,7 @@ data "azurerm_subnet" "subnet" {
   resource_group_name  = data.azurerm_virtual_network.vnet.resource_group_name
 }
 
-# Create a new Network Interface connected to the existing Subnet
+## Create a new Network Interface connected to the existing Subnet
 resource "azurerm_network_interface" "example" {
   name                = "${var.prefix}-nic"
   location            = var.location # Update the location if necessary
@@ -20,7 +20,7 @@ resource "azurerm_network_interface" "example" {
   ip_configuration {
     name                          = "${var.prefix}-ip"
     subnet_id                     = data.azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
   }
 }
 
