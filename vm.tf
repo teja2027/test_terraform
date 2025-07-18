@@ -20,7 +20,7 @@ resource "azurerm_network_interface" "example" {
   ip_configuration {
     name                          = "${var.prefix}-ip"
     subnet_id                     = data.azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = "Static"
   }
 }
 
