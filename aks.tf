@@ -1,16 +1,3 @@
-# Reference the existing Virtual Network
-data "azurerm_virtual_network" "vnet" {
-  name                = "agentPool-vnet"
-  resource_group_name = "myRg"
-}
-
-# Reference the existing Subnet
-data "azurerm_subnet" "subnet" {
-  name                 = "default"
-  virtual_network_name = data.azurerm_virtual_network.vnet.name
-  resource_group_name  = data.azurerm_virtual_network.vnet.resource_group_name
-}
-
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                      = "testaks01"
