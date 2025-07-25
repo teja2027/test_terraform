@@ -11,7 +11,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name                = "default"
     node_count          = 1
     vm_size             = "Standard_D2_v4"
-    vnet_subnet_id      = data.azurerm_subnet.subnet.id
+    #vnet_subnet_id      = data.azurerm_subnet.subnet.id
   }
 
   identity {
