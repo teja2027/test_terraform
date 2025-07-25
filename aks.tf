@@ -6,10 +6,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   dns_prefix                = "aksdns"
   kubernetes_version        = "1.32.5"
   sku_tier                  = "Free"
-  node_os_channel_upgrade   = "none"
-  network_policy            = "none"
-  load_balancer_sku         = "standard"
-
+  
   default_node_pool {
     name                = "default"
     node_count          = 1
