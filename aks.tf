@@ -15,8 +15,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
    network_profile {
     network_plugin    = "azure"
-    service_cidr      = "10.0.0.1/25"
-    dns_service_ip    = "10.0.0.1"
+    service_cidr      = "10.0.0.0/25"
+    dns_service_ip    = "10.0.0.0"
   }
 
   identity {
