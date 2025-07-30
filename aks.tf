@@ -13,11 +13,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
     vnet_subnet_id      = data.azurerm_subnet.subnet.id
   }
 
-  #  network_profile {
-  #   network_plugin    = "kubenet"
-  #   service_cidr      = "10.0.0.0/25"
-  #   dns_service_ip    = "10.0.0.0"
-  # }
+   network_profile {
+    network_plugin    = "kubenet"
+    service_cidr      = "10.0.0.0/25"
+    dns_service_ip    = "10.0.0.10"
+  }
 
   identity {
     type = "SystemAssigned"
